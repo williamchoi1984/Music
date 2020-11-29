@@ -165,15 +165,17 @@ class YTDLSource(discord.PCMVolumeTransformer):
 			song_list_str : str = ""
 			cnt : int = 0
 			song_index : int = 0
+			song_url_list : list = []
 
 			for data_info in data["entries"]:
 				cnt += 1
 				if 'title' not in data_info:
 					data_info['title'] = f"{search} - 제목 정보 없음"
 				song_list_str += f"`{cnt}.` [**{data_info['title']}**](https://www.youtube.com/watch?v={data_info['url']})\n"
+				song_url_list.append(f"https://www.youtube.com/watch?v={data_info['url']}")
 
 			embed = discord.Embed(description= song_list_str)
-			embed.set_footer(text=f"10초 안에 미선택시 취소됩니다.")
+			embed.set_footer(text=f"20초 안에 미선택시 취소됩니다.")
 
 			song_list_message = await ctx.send(embed = embed)
 
@@ -183,7 +185,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 			def reaction_check(reaction, user):
 				return (reaction.message.id == song_list_message.id) and (user.id == ctx.author.id) and (str(reaction) in emoji_list)
 			try:
-				reaction, user = await bot.wait_for('reaction_add', check = reaction_check, timeout = 10)
+				reaction, user = await bot.wait_for('reaction_add', check = reaction_check, timeout = 20)
 			except asyncio.TimeoutError:
 				reaction = "🚫"
 
@@ -205,7 +207,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
 			else:
 				return False
 			
-			result_url = f"https://www.youtube.com/watch?v={data['entries'][song_index]['url']}"
+			#result_url = f"https://www.youtube.com/watch?v={data['entries'][song_index]['url']}"
+			result_url = song_url_list[song_index]
+			print(result_url)
 		else:
 			result_url = search
 
@@ -612,7 +616,7 @@ class Music(commands.Cog):
 		command_list += ','.join(command[10]) + '\n'     #!삭제
 		command_list += ','.join(command[11]) + '\n'     #!섞기
 		command_list += ','.join(command[14]) + '\n'     #!
-		command_list += ','.join(command[13]) + ' [숫자]\n'     #!경주
+		command_list += ','.join(command[13]) + ' [숫자]\n'     #!채팅청소
 		embed = discord.Embed(
 				title = "----- 명령어 -----",
 				description= '```' + command_list + '```',
@@ -624,7 +628,7 @@ class Music(commands.Cog):
 	async def playText_(self, ctx):
 		#msg = ctx.message.content[len(ctx.invoked_with)+1:]
 		#sayMessage = msg
-		await MakeSound('뮤직봇이 마이 아파요. 잠시 후 사용해주세요.', './say' + str(ctx.guild.id))
+		#await MakeSound('뮤직봇이 마이 아파요. 잠시 후 사용해주세요.', './say' + str(ctx.guild.id))
 		await ctx.send("```뮤직봇이 마이 아파요. 잠시 후 사용해주세요.```", tts=False)
 		
 		if not ctx.voice_state.voice:
@@ -633,7 +637,7 @@ class Music(commands.Cog):
 		if ctx.voice_state.is_playing:
 			ctx.voice_state.voice.stop()
 		
-		await PlaySound(ctx.voice_state.voice, './say' + str(ctx.guild.id) + '.wav')
+		#await PlaySound(ctx.voice_state.voice, './say' + str(ctx.guild.id) + '.wav')
 
 
 		await ctx.voice_state.stop()
