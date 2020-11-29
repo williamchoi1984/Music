@@ -602,9 +602,9 @@ class Music(commands.Cog):
 	@commands.command(name=command[12][0], aliases=command[12][1:])   #도움말
 	async def menu_(self, ctx):
 		command_list = ''
-		command_list += '!인중 : 봇상태가 안좋을 때 쓰세요!'     #!
-		command_list += ','.join(command[0]) + '\n'     #!들어가자
-		command_list += ','.join(command[1]) + '\n'     #!나가자
+		command_list += '!인중3 : 봇상태가 안좋을 때 쓰세요!'     #!
+		command_list += ','.join(command[0]) + '\n'     #!들어가자3
+		command_list += ','.join(command[1]) + '\n'     #!나가자3
 		command_list += ','.join(command[2]) + ' [검색어] or [url]\n'     #!재생
 		command_list += ','.join(command[3]) + '\n'     #!일시정지
 		command_list += ','.join(command[4]) + '\n'     #!다시재생
@@ -624,7 +624,7 @@ class Music(commands.Cog):
 				)
 		await ctx.send( embed=embed, tts=False)
 	################ 음성파일 생성 후 재생 ################ 			
-	@commands.command(name="!인중")
+	@commands.command(name="!인중3")
 	async def playText_(self, ctx):
 		#msg = ctx.message.content[len(ctx.invoked_with)+1:]
 		#sayMessage = msg
