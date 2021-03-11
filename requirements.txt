@@ -1,5 +1,5 @@
 websockets==6.0
 discord
 discord.py[voice]
-youtube_dl==2021.0
+youtube_dl==2017.02.10
 gtts
